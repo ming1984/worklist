@@ -1,0 +1,63 @@
+def C(n,r):
+    '''
+    计算排列组合C（n,r)
+    C（n,r)=n!/r!/(n-r)!
+    '''
+    if r==0 or n==r:
+        return 1
+    else:
+        return jc(n)/jc(r)/jc(n-r)
+
+def jc(n):
+    '''
+计算n的阶乘
+'''
+    if n==1:
+        return 1
+    else:
+        return n*jc(n-1)
+def count(red,blue):
+    '''
+按红球、蓝球的个数计算组合数量。
+'''
+    if blue==0:
+        return C(6,red)*C(27,6-red)*C(15,1) #蓝球没中时，C(6,r)*C(27,6-r)*C(15,1)
+    else:
+        return C(6,red)*C(27,6-red)*1 #蓝球有中时，C(6,r)*C(27,6-r)*1
+
+bonus = [-1,5000000,100000,3000,200,10,5] #一到六等奖的奖金，-1只是占位，一等奖以500万计，二等奖是浮动的数值，且以10万计。
+
+all = C(33,6)*C(16,1) #全部组合
+
+j1=count(6,1)/all #一等奖的概率
+
+j2=count(6,0)/all #二等奖的概率
+
+j3=count(5,1)/all #三等奖的概率
+
+j4=(count(5,0)+count(4,1))/all #四等奖的概率
+
+j5=(count(4,0)+count(3,1))/all #五等奖的概率
+
+j6=(count(2,1)+count(1,1)+count(0,1))/all #五等奖的概率
+
+E=0
+
+for i in range(1,7):
+    E+=j1*bonus[i]
+
+print("双色球中奖概率如下：")
+
+print("一等奖的中奖概率：1/{:.0f}".format(1/j1))
+
+print("二等奖的中奖概率：1/{:.0f}".format(1/j2))
+
+print("三等奖的中奖概率：1/{:.0f}".format(1/j3))
+
+print("四等奖的中奖概率：1/{:.0f}".format(1/j4))
+
+print("五等奖的中奖概率：1/{:.0f}".format(1/j5))
+
+print("六等奖的中奖概率：1/{:.0f}".format(1/j6))
+
+print("购买一注彩票的期望值:{:.2f}".format(E))
